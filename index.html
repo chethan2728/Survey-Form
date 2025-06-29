@@ -47,7 +47,7 @@
       backdrop-filter: blur(20px);
       box-shadow: var(--glow);
     }
-    h1, p { text-align: center; margin-bottom: 1.5rem; }
+    h1, h4, p { text-align: center; margin-bottom: 1.5rem; }
     label { display: block; margin-top: 1rem; font-size: 0.9rem; }
     input, select, textarea {
       width: 100%;
@@ -56,7 +56,11 @@
       border-radius: 10px;
       background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.3);
-      color: white; font-size: 1rem;
+      font-size: 1rem;
+      color: white;
+    }
+    select{
+      color:black
     }
     ::placeholder { color: rgba(255,255,255,0.6); }
     input[type=radio], input[type=checkbox] {
@@ -86,8 +90,9 @@
   <canvas id="bg"></canvas>
   <div class="container">
     <form id="survey-form">
-      <h1 id="title">🚀 Futuristic Survey</h1>
-      <p id="description">Tell us your cosmic thoughts!</p>
+      <h1 id="title">JUST DO IT</h1>
+      <h4 id="author">By Chethan Nayak</h4>
+      <p id="description">Experimental survey form!</p>
 
       <label id="name-label" for="name">Name</label>
       <input type="text" name="name" id="name" placeholder="Enter your name" required>
@@ -98,20 +103,30 @@
       <label id="number-label" for="number">Age</label>
       <input type="number" name="age" id="number" min="10" max="100" placeholder="Enter your age" required>
 
-      <label for="dropdown">Field of Interest</label>
+      <label for="dropdown">Education</label>
       <select id="dropdown" name="field">
-        <option value="ai">Artificial Intelligence</option>
-        <option value="space">Space Tech</option>
+        <option value="" disabled selected>Select your education</option>
+        <option value="btech">B.TECH</option>
+        <option value="bba">BBA</option>
+        <option value="bca">BCA</option>
+        <option value="mca">MCA</option>
+        <option value="msc">MSc</option>
+        <option value="msc-it">MSc IT</option>
+        <option value="msc-cs">MSc CS</option>
+        <option value="bsc">BSc</option>
+        <option value="bcom">BCom</option>
+        <option value="mcom">MCom</option>
+        <option value="bba-llb">BBA LLB</option>
       </select>
 
-      <label>Would you join our space mission?</label>
+      <label>would you prefer the same education if given another choice</label>
       <label><input type="radio" name="join" value="yes">Yes</label>
       <label><input type="radio" name="join" value="no">No</label>
 
-      <label>Technologies you love:</label>
-      <label><input type="checkbox" name="technologies" value="vr"> VR</label>
-      <label><input type="checkbox" name="technologies" value="quantum"> Quantum Computing</label>
-      <label><input type="checkbox" name="technologies" value="web3"> Web3</label>
+      <label>what would you rather do</label>
+      <label><input type="checkbox" name="technologies" value="vr"> nothing</label>
+      <label><input type="checkbox" name="technologies" value="quantum"> choose a different field</label>
+      <label><input type="checkbox" name="technologies" value="web3">focus on my skill rather than education</label>
 
       <label for="comments">Any thoughts?</label>
       <textarea id="comments" name="comments" placeholder="Share your ideas..."></textarea>
@@ -136,13 +151,13 @@
       starVertices[i] = (Math.random() - 0.5) * 2000;
     }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(starVertices, 3));
-    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.9 });
     const starField = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(starField);
 
     // Cube
-    const cubeGeom = new THREE.BoxGeometry(1,1,1);
-    const cubeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, roughness: 0.3, metalness: 0.7 });
+    const cubeGeom = new THREE.BoxGeometry(3.3,3.3,3.3);
+    const cubeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, roughness: 0.5, metalness: 0.9 });
     const cube = new THREE.Mesh(cubeGeom, cubeMat);
     scene.add(cube);
 
@@ -157,15 +172,15 @@
     document.getElementById('survey-form').addEventListener('submit', e => {
       e.preventDefault();
       warp = true;
-      speed = 0.1;
+      speed = 10;
       // you can also add form submission logic here
     });
 
     function animate() {
       requestAnimationFrame(animate);
 
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      cube.rotation.x += 0.008;
+      cube.rotation.y += 0.008;
       starField.rotation.y += 0.0005;
 
       if (warp && speed < 2) {
