@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Futuristic Survey Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -10,84 +11,57 @@
       --main-border: rgba(255, 255, 255, 0.2);
       --glow: 0 0 20px rgba(0, 255, 255, 0.7);
     }
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
-
     body {
-      margin: 0 auto;
-      padding: 0;
       font-family: 'Orbitron', sans-serif;
       background: black;
       color: white;
       height: 100vh;
       overflow: hidden;
     }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+    canvas#bg {
+      position: fixed;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
       z-index: -1;
     }
-
     .container {
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 170vh;
-      overflow: hidden;
     }
-
     form {
-      transform: scale(0.5);
-      transform-origin: top center; 
+      transform: scale(0.8);
+      transform-origin: center;
       background: var(--main-bg);
       border: 1px solid var(--main-border);
-      border-radius: 10px;
+      border-radius: 20px;
       padding: 1.5rem;
       width: 600px;
-      max-width: 600px;
+      max-height: 600px;
       overflow: auto;
       backdrop-filter: blur(20px);
       box-shadow: var(--glow);
     }
-
-    h1, p {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-
+    h1, p { text-align: center; margin-bottom: 1.5rem; }
+    label { display: block; margin-top: 1rem; font-size: 0.9rem; }
     input, select, textarea {
       width: 100%;
       padding: 0.75rem;
       margin-top: 0.5rem;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      font-size: 1rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white; font-size: 1rem;
     }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(255, 255, 255, 0.6);
+    ::placeholder { color: rgba(255,255,255,0.6); }
+    input[type=radio], input[type=checkbox] {
+      width: auto; margin-right: 0.5rem;
     }
-
-    input[type="radio"],
-    input[type="checkbox"] {
-      width: auto;
-      margin-right: 0.5rem;
-    }
-
     button {
       width: 100%;
       margin-top: 1.5rem;
@@ -101,7 +75,6 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
     button:hover {
       background: #00ffff;
       box-shadow: 0 0 10px #00ffff;
@@ -111,23 +84,22 @@
 <body>
 
   <canvas id="bg"></canvas>
-
   <div class="container">
-    <form id="survey-form" action="https://formspree.io/f/mdkzypno" method="POST">
-      <h1 id="title">🌌 Futuristic Survey</h1>
-      <p id="description">Help us build the future. Fill out the form below.</p>
+    <form id="survey-form">
+      <h1 id="title">🚀 Futuristic Survey</h1>
+      <p id="description">Tell us your cosmic thoughts!</p>
 
       <label id="name-label" for="name">Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      <input type="text" name="name" id="name" placeholder="Enter your name" required>
 
       <label id="email-label" for="email">Email</label>
-      <input type="email" id="email" name="name" placeholder="Enter your email" required>
+      <input type="email" name="email" id="email" placeholder="Enter your email" required>
 
       <label id="number-label" for="number">Age</label>
-      <input type="number" id="number" name="name" min="10" max="100" placeholder="Enter your age" required>
+      <input type="number" name="age" id="number" min="10" max="100" placeholder="Enter your age" required>
 
       <label for="dropdown">Field of Interest</label>
-      <select id="dropdown">
+      <select id="dropdown" name="field">
         <option value="ai">Artificial Intelligence</option>
         <option value="space">Space Tech</option>
       </select>
@@ -137,52 +109,83 @@
       <label><input type="radio" name="join" value="no">No</label>
 
       <label>Technologies you love:</label>
-      <label><input type="checkbox" value="vr"> VR</label>
-      <label><input type="checkbox" value="quantum"> Quantum Computing</label>
-      <label><input type="checkbox" value="web3"> Web3</label>
+      <label><input type="checkbox" name="technologies" value="vr"> VR</label>
+      <label><input type="checkbox" name="technologies" value="quantum"> Quantum Computing</label>
+      <label><input type="checkbox" name="technologies" value="web3"> Web3</label>
 
       <label for="comments">Any thoughts?</label>
-      <textarea id="comments" name="name" placeholder="Share your ideas..."></textarea>
+      <textarea id="comments" name="comments" placeholder="Share your ideas..."></textarea>
 
-      <button id="submit" type="submit">🚀 Submit</button>
+      <button type="submit" id="submit">Submit</button>
     </form>
   </div>
 
-  <!-- Three.js from CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js"></script>
   <script>
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({canvas: document.getElementById('bg'), alpha: true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg'), alpha: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(devicePixelRatio);
 
-    // Create particles
-    const geometry = new THREE.BufferGeometry();
-    const particlesCount = 1000;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for(let i=0; i<particlesCount*3; i++){
-      posArray[i] = (Math.random() - 0.5) * 50;
+    // Starfield
+    const starsGeometry = new THREE.BufferGeometry();
+    const starCount = 15000;
+    const starVertices = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i++) {
+      starVertices[i] = (Math.random() - 0.5) * 2000;
     }
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(starVertices, 3));
+    const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+    const starField = new THREE.Points(starsGeometry, starsMaterial);
+    scene.add(starField);
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const material = new THREE.PointsMaterial({
-      size: 0.05,
-      color: '#00ffff'
-    });
+    // Cube
+    const cubeGeom = new THREE.BoxGeometry(1,1,1);
+    const cubeMat = new THREE.MeshStandardMaterial({ color: 0x00ffff, roughness: 0.3, metalness: 0.7 });
+    const cube = new THREE.Mesh(cubeGeom, cubeMat);
+    scene.add(cube);
 
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5,5,5);
+    scene.add(pointLight);
     camera.position.z = 5;
 
-    function animate(){
+    let warp = false;
+    let speed = 0;
+
+    document.getElementById('survey-form').addEventListener('submit', e => {
+      e.preventDefault();
+      warp = true;
+      speed = 0.1;
+      // you can also add form submission logic here
+    });
+
+    function animate() {
       requestAnimationFrame(animate);
-      particles.rotation.y += 0.001;
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      starField.rotation.y += 0.0005;
+
+      if (warp && speed < 2) {
+        speed += 0.02;
+      }
+      starField.geometry.attributes.position.array.forEach((v, idx, arr) => {
+        arr[idx+2] += speed;
+        if (arr[idx+2] > 1000) arr[idx+2] = -1000;
+      });
+      starField.geometry.attributes.position.needsUpdate = true;
+
       renderer.render(scene, camera);
     }
-
     animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
   </script>
 </body>
 </html>
